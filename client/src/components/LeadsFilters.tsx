@@ -6,8 +6,6 @@ import toast from 'react-hot-toast';
 
 interface LeadsFiltersProps {
   onAddLeadClick: () => void;
-  search: string;
-  onSearchChange: (value: string) => void;
 }
 
 export const LeadsFilters: React.FC<LeadsFiltersProps> = ({
