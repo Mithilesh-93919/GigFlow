@@ -5,6 +5,7 @@ import { leadsApi } from '../api/leads';
 import toast from 'react-hot-toast';
 
 interface LeadsFiltersProps {
+
   onAddLeadClick: () => void;
 }
 
