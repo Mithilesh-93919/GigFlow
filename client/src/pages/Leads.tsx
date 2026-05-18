@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LeadsFilters } from '../components/LeadsFilters';
 import { LeadsTable } from '../components/LeadsTable';
@@ -9,10 +9,6 @@ import { Lead } from '../types/lead';
 const Leads: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { createLead, updateLead, deleteLead } = useLeadMutations();
-  const [searchInput, setSearchInput] = useState(
-    searchParams.get('search') || ''
-  );
-
   // Extract filters from URL
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const limit = 10;
@@ -20,25 +16,6 @@ const Leads: React.FC = () => {
   const source = searchParams.get('source') || undefined;
   const search = searchParams.get('search') || undefined;
   const sort = searchParams.get('sort') || undefined;
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchParams((prev) => {
-        const params = new URLSearchParams(prev);
-
-        if (searchInput.trim()) {
-          params.set('search', searchInput);
-        } else {
-          params.delete('search');
-        }
-
-        params.set('page', '1');
-
-        return params;
-      });
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchInput, setSearchParams]);
 
   // TanStack Query lead query hook
   const { data, isLoading, error, refetch } = useLeads({
