@@ -10,8 +10,8 @@ const Leads: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { createLead, updateLead, deleteLead } = useLeadMutations();
   const [searchInput, setSearchInput] = useState(
-  searchParams.get('search') || ''
-);
+    searchParams.get('search') || ''
+  );
 
   // Extract filters from URL
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
@@ -21,24 +21,24 @@ const Leads: React.FC = () => {
   const search = searchParams.get('search') || undefined;
   const sort = searchParams.get('sort') || undefined;
   useEffect(() => {
-  const timer = setTimeout(() => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
+    const timer = setTimeout(() => {
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
 
-      if (searchInput.trim()) {
-        params.set('search', searchInput);
-      } else {
-        params.delete('search');
-      }
+        if (searchInput.trim()) {
+          params.set('search', searchInput);
+        } else {
+          params.delete('search');
+        }
 
-      params.set('page', '1');
+        params.set('page', '1');
 
-      return params;
-    });
-  }, 500);
+        return params;
+      });
+    }, 500);
 
-  return () => clearTimeout(timer);
-}, [searchInput, setSearchParams]);
+    return () => clearTimeout(timer);
+  }, [searchInput, setSearchParams]);
 
   // TanStack Query lead query hook
   const { data, isLoading, error, refetch } = useLeads({
@@ -121,11 +121,10 @@ const Leads: React.FC = () => {
 
       {/* Advanced Filtering & Actions */}
       <LeadsFilters
-        onAddLeadClick={handleAddClick}
-        search={searchInput}
-        onSearchChange={setSearchInput} />
-      
-        
+        onAddLeadClick={handleAddClick} />
+
+
+
 
       {/* Leads Responsive Directory */}
       <div className="flex-1 min-h-[400px]">
