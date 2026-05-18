@@ -159,7 +159,7 @@ docker-compose up --build -d
 | :---: | :---: |
 | ![Dashboard](./screenshots/dashboard.png) | ![Leads](./screenshots/leads.png) |
 
-| Add Lead Modal | Dark Mode Toggle |
+| Add Lead Modal | Lead Details |
 | :---: | :---: |
 | ![Modal](./screenshots/modal.png) | ![Lead Details](./screenshots/lead-details.png) |
 
