@@ -157,20 +157,13 @@ docker-compose up --build -d
 
 | Dashboard Overview | Leads Directory Grid |
 | :---: | :---: |
-| ![Dashboard](https://via.placeholder.com/500x300/0f172a/ffffff?text=Dashboard+UI) | ![Leads](https://via.placeholder.com/500x300/0f172a/ffffff?text=Leads+Directory) |
+| ![Dashboard](./screenshots/dashboard.png) | ![Leads](./screenshots/leads.png) |
 
 | Add Lead Modal | Dark Mode Toggle |
 | :---: | :---: |
-| ![Modal](https://via.placeholder.com/500x300/0f172a/ffffff?text=Create+Lead+Modal) | ![Dark Mode](https://via.placeholder.com/500x300/0f172a/ffffff?text=Dark+Mode+Theme) |
+| ![Modal](./screenshots/modal.png) | ![Lead Details](./screenshots/lead-details.png) |
 
----
 
-## 🌐 Deployment Links
-
-- **Live Application:** [https://gigflow-app.com](#) *(Coming Soon)*
-- **API Documentation:** [https://api.gigflow-app.com/docs](#) *(Coming Soon)*
-
----
 
 ## 🔮 Future Improvements
 
