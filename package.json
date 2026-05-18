@@ -15,11 +15,11 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-"@types/express": "^5.0.0",
-"@types/cors": "^2.8.17",
-"@types/morgan": "^1.9.9",
-"@types/bcryptjs": "^2.4.6",
-"@types/jsonwebtoken": "^9.0.6",
-"@types/json2csv": "^5.0.7"
+    "@types/express": "^5.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/json2csv": "^5.0.7"
   }
 }
