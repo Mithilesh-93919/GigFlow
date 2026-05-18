@@ -1,0 +1,15 @@
+/**
+ * validators/
+ *
+ * Place request validation schemas in this folder.
+ * Recommended: use `zod` or `express-validator` for schema-based validation.
+ *
+ * Pattern:
+ *   validators/auth.validator.ts
+ *   validators/user.validator.ts
+ *
+ * Usage in a route:
+ *   import { validateBody } from '../middlewares/validate';
+ *   import { createUserSchema } from '../validators/user.validator';
+ *   router.post('/', validateBody(createUserSchema), asyncHandler(createUser));
+ */
