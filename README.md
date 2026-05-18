@@ -1,6 +1,5 @@
 # ⚡ GigFlow
 
-![GigFlow Banner](https://via.placeholder.com/1200x300/0f172a/3b82f6?text=GigFlow+-+Premium+Lead+Management+CRM)
 
 > **GigFlow** is a modern, enterprise-ready MERN stack application tailored for efficient Lead Management. It features strict TypeScript typings, comprehensive Role-Based Access Control (RBAC), and a beautifully crafted, highly-responsive frontend command center.
 
