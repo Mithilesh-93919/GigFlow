@@ -96,7 +96,7 @@ VITE_API_URL=http://localhost:5000/api/v1
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/yourusername/gigflow.git
+git clone https://github.com/Mithilesh-93919/gigflow.git
 cd gigflow
 ```
 
