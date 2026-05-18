@@ -1,10 +1,25 @@
 {
   "version": 2,
-  "buildCommand": "npm run build --workspaces",
-  "outputDirectory": "client/dist",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "client/dist"
+      }
+    },
+    {
+      "src": "api/[...slug].ts",
+      "use": "@vercel/node"
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
+      "destination": "/api/[...slug].ts"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
