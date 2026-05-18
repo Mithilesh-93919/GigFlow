@@ -1,0 +1,18 @@
+/**
+ * controllers/
+ *
+ * Controllers are thin — they only:
+ *   1. Parse/validate the request (or delegate to a validator middleware)
+ *   2. Call the appropriate service method
+ *   3. Return a response via sendSuccess / sendError
+ *
+ * Pattern:
+ *   controllers/auth.controller.ts
+ *   controllers/user.controller.ts
+ *
+ * Example:
+ *   export const getUser = asyncHandler(async (req, res) => {
+ *     const user = await userService.findById(req.params.id);
+ *     sendSuccess(res, user);
+ *   });
+ */

@@ -1,0 +1,19 @@
+/**
+ * services/
+ *
+ * Services contain all business logic and interact with models.
+ * They are framework-agnostic — no req/res objects.
+ *
+ * Pattern:
+ *   services/auth.service.ts
+ *   services/user.service.ts
+ *
+ * Example:
+ *   export const userService = {
+ *     findById: async (id: string): Promise<IUser> => {
+ *       const user = await UserModel.findById(id);
+ *       if (!user) throw new NotFoundError('User not found');
+ *       return user;
+ *     },
+ *   };
+ */

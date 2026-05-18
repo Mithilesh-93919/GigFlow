@@ -1,0 +1,22 @@
+/**
+ * models/
+ *
+ * Mongoose models live here. Each model file exports:
+ *   - The Mongoose Document interface
+ *   - The Model itself
+ *
+ * Pattern:
+ *   models/User.model.ts
+ *   models/Gig.model.ts
+ *
+ * Example:
+ *   import { Schema, model, Document } from 'mongoose';
+ *
+ *   export interface IUser extends Document {
+ *     email: string;
+ *     name: string;
+ *   }
+ *
+ *   const userSchema = new Schema<IUser>({ ... }, { timestamps: true });
+ *   export const UserModel = model<IUser>('User', userSchema);
+ */
