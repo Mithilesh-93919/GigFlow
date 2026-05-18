@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, RotateCcw, Download, Plus } from 'lucide-react';
 import { leadsApi } from '../api/leads';
@@ -12,8 +12,6 @@ interface LeadsFiltersProps {
 
 export const LeadsFilters: React.FC<LeadsFiltersProps> = ({
   onAddLeadClick,
-  search,
-  onSearchChange,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
