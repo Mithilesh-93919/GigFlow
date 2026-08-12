@@ -1,176 +1,232 @@
-# ⚡ GigFlow
+# ⚡ GigFlow — Lead Management CRM
 
+> **GigFlow** is a modern, production-ready MERN stack CRM application built for efficient lead management. It features strict TypeScript typings, Role-Based Access Control (RBAC), real-time data dashboards, and a premium, responsive frontend.
 
-> **GigFlow** is a modern, enterprise-ready MERN stack application tailored for efficient Lead Management. It features strict TypeScript typings, comprehensive Role-Based Access Control (RBAC), and a beautifully crafted, highly-responsive frontend command center.
+---
+
+## 🔗 Live Deployment
+
+| Service | URL |
+|---------|-----|
+| **Frontend (Vercel)** | [https://client-two-gilt-35.vercel.app](https://client-two-gilt-35.vercel.app) |
+| **Backend API (Render)** | [https://gigflow-api-awy7.onrender.com](https://gigflow-api-awy7.onrender.com) |
+| **API Health Check** | [/api/v1/health](https://gigflow-api-awy7.onrender.com/api/v1/health) |
+| **Database** | MongoDB Atlas (Cluster0) |
+
+> ⚠️ **Note:** The backend runs on Render's free tier, which may take up to 50 seconds to spin up after inactivity. Wait a moment and retry if the first request times out.
 
 ---
 
 ## 📖 Project Overview
 
-GigFlow equips sales teams and administrators with a high-performance workspace to track, query, and coordinate leads across various channels (Website, Instagram, Referrals). Built with scale in mind, it seamlessly integrates advanced data-grid functionalities—such as debounced searching, server-side pagination, status filtering, and dynamic CSV data exports—all wrapped in a premium Dark/Light mode UI.
+GigFlow equips sales teams and administrators with a high-performance workspace to track, query, and coordinate leads across various channels (Website, Instagram, Referrals). Built with scale in mind, it seamlessly integrates advanced data-grid functionalities — debounced searching, server-side pagination, status filtering, and dynamic CSV data exports — all wrapped in a premium, responsive UI.
+
+---
 
 ## ✨ Features
 
-- **Robust Authentication:** Secure JWT-based session management and encrypted passwords.
-- **Role-Based Access Control (RBAC):** Distinct permissions separating `Admin` and `Sales` users. Sales roles can interact with leads but are strictly blocked from destructive operations (like deleting records).
-- **Advanced Lead Management:** Create, view, edit, and delete prospects safely.
-- **Server-Side Data Operations:** Scalable queries incorporating skip/limit pagination, chronological sorting, and regex-powered global searching.
-- **One-Click CSV Export:** Instantly extract active, filtered lead queries into formatted CSV files.
-- **Premium User Experience:** Immersive UI using glassmorphism, smooth micro-animations, skeleton loaders, and graceful empty/error states.
-- **Dynamic Dark Mode:** Class-based Light/Dark theme toggle with automatic persistence via `localStorage`.
-- **Form Integrity:** Rock-solid input validation via `Zod` schemas intersecting both the frontend (`react-hook-form`) and the Express routing layer.
-- **Containerized:** Fully Dockerized architecture utilizing Nginx reverse proxies and lightweight Alpine builds.
+- **Secure Authentication:** JWT-based session management with bcrypt-encrypted passwords and localStorage persistence.
+- **Role-Based Access Control (RBAC):** `Admin` users can create, view, update, and delete leads. `Sales` users can create, view, and update, but cannot delete.
+- **Real-Time Dashboard:** Live statistics (total leads, qualified count, conversion rate) and a recent leads feed — all powered by the actual API.
+- **Advanced Lead Management:** Create, view (with detail page), edit inline, and delete leads with full form validation.
+- **Server-Side Data Operations:** Scalable queries with skip/limit pagination, chronological sorting, and regex-powered global search.
+- **One-Click CSV Export:** Instantly extract the active filtered lead list as a formatted CSV file.
+- **Comprehensive Form Validation:** Zod schemas are shared between frontend (react-hook-form) and the backend Express routing layer for end-to-end integrity.
+- **Premium UI/UX:** Glassmorphism accents, smooth micro-animations, skeleton loaders, graceful empty/error states.
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-### Frontend (Client)
-- **Framework:** React 18 + Vite
-- **Language:** TypeScript
-- **State Management:** Zustand (Auth/Theme), TanStack Query (Server State)
-- **Styling:** Tailwind CSS (v3) + `lucide-react` icons
-- **Form & Validation:** React Hook Form + Zod
+### Backend (`/server`)
+| Technology | Purpose |
+|-----------|---------|
+| Node.js + Express | HTTP server and REST API |
+| TypeScript | End-to-end type safety |
+| MongoDB + Mongoose | Database and ODM |
+| JWT (jsonwebtoken) | Authentication tokens |
+| bcryptjs | Password hashing |
+| Zod | Request body validation |
+| Winston | Structured logging |
+| Helmet + CORS | Security headers |
 
-### Backend (Server)
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Language:** TypeScript
-- **Database:** MongoDB + Mongoose ODM
-- **Security:** Helmet, CORS, bcryptjs, JSONWebToken (JWT)
+### Frontend (`/client`)
+| Technology | Purpose |
+|-----------|---------|
+| React 18 + TypeScript | UI framework |
+| Vite | Build tool and dev server |
+| TanStack Query | Server state management and caching |
+| React Router v6 | Client-side routing + protected routes |
+| Zustand | Auth state (with localStorage persistence) |
+| Axios | HTTP client with interceptors |
+| React Hook Form + Zod | Form management and validation |
+| Lucide React | Icons |
+| react-hot-toast | Notifications |
+| Tailwind CSS | Utility-first styling |
 
 ---
 
-## 📂 Folder Structure
+## 📂 Project Structure
 
-```text
-gigflow/
-├── client/                 # Frontend React Application
-│   ├── public/             # Static assets
+```
+GigFlow/
+├── client/                    # React frontend
 │   ├── src/
-│   │   ├── api/            # Axios API client setup
-│   │   ├── components/     # Reusable UI components (Tables, Modals, Inputs)
-│   │   ├── hooks/          # TanStack Queries and Custom Permissions
-│   │   ├── layouts/        # Dashboard wrappers and navigation
-│   │   ├── pages/          # Main route components (Login, Leads, Dashboard)
-│   │   ├── store/          # Zustand global stores (auth, theme)
-│   │   └── types/          # Strict TypeScript interface definitions
-│   ├── Dockerfile          # Multi-stage Vite -> Nginx build
-│   └── tailwind.config.ts  # Design system tokens and Dark Mode config
+│   │   ├── api/               # Axios API clients (auth, leads)
+│   │   ├── components/        # Shared UI components (Table, Modal, Filters)
+│   │   ├── hooks/             # Custom hooks (useAuth, useLeads)
+│   │   ├── layouts/           # DashboardLayout with sidebar/navbar
+│   │   ├── pages/             # Page components (Dashboard, Leads, Login, Register, LeadDetails)
+│   │   ├── routes/            # ProtectedRoute wrapper
+│   │   ├── store/             # Zustand auth store
+│   │   ├── types/             # TypeScript interfaces (auth, lead)
+│   │   └── utils/             # Helper utilities (cn, etc.)
+│   ├── vercel.json            # Vercel SPA routing config
+│   └── .env.production        # Production API URL
 │
-├── server/                 # Backend Node.js API
+├── server/                    # Express backend API
 │   ├── src/
-│   │   ├── controllers/    # Route handlers
-│   │   ├── middlewares/    # Auth, Error handlers, Async Wrappers
-│   │   ├── models/         # Mongoose DB Schemas
-│   │   ├── routes/         # Express API routing logic
-│   │   ├── services/       # Core business logic and query builders
-│   │   └── index.ts        # Server entry point
-│   └── Dockerfile          # Multi-stage production build
+│   │   ├── config/            # env, database, cors configuration
+│   │   ├── controllers/       # Request handlers (auth, lead)
+│   │   ├── middlewares/       # authenticate, authorize, validate, errorHandler
+│   │   ├── models/            # Mongoose models (User, Lead)
+│   │   ├── routes/            # Express routers (auth, lead, health)
+│   │   ├── services/          # Business logic (auth.service, lead.service)
+│   │   ├── types/             # Shared TypeScript types
+│   │   ├── utils/             # AppError, asyncHandler, jwt, pagination
+│   │   └── validators/        # Zod request schemas (auth, lead)
+│   └── .env.example           # Environment variable template
 │
-└── docker-compose.yml      # Orchestration for Frontend, Backend, and MongoDB
+└── docker-compose.yml         # Local Docker development setup
 ```
 
 ---
 
-## ⚙️ Environment Setup
+## 🚀 Getting Started (Local Development)
 
-### Backend (`server/.env`)
+### Prerequisites
+- Node.js 18+
+- MongoDB 6+ (local) or a MongoDB Atlas URI
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Mithilesh-93919/GigFlow.git
+cd GigFlow
+```
+
+### 2. Install dependencies
+```bash
+# Install root + all workspace dependencies
+npm install
+```
+
+### 3. Configure environment variables
+
+**Server** — copy and fill in `/server/.env`:
+```bash
+cp server/.env.example server/.env
+```
+
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/gigflow
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRES_IN=7d
 NODE_ENV=development
+MONGODB_URI=mongodb://localhost:27017/gigflow
+CORS_ORIGIN=http://localhost:5173
+JWT_SECRET=your_strong_random_secret_here
+JWT_EXPIRES_IN=7d
+LOG_LEVEL=debug
 ```
 
-### Frontend (`client/.env`)
+**Client** — create `/client/.env`:
 ```env
 VITE_API_URL=http://localhost:5000/api/v1
 ```
 
----
-
-## 🚀 Installation Steps (Local Development)
-
-**1. Clone the repository**
+### 4. Start development servers
 ```bash
-git clone https://github.com/Mithilesh-93919/gigflow.git
-cd gigflow
-```
-
-**2. Setup the Backend**
-```bash
-cd server
-npm install
-# Ensure MongoDB is running locally on port 27017
+# From the root directory — starts both client and server concurrently
 npm run dev
 ```
 
-**3. Setup the Frontend**
-```bash
-cd ../client
-npm install
-npm run dev
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:5000/api/v1
+
+---
+
+## 🔑 API Reference
+
+### Authentication
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/api/v1/auth/register` | Public | Create a new account |
+| `POST` | `/api/v1/auth/login` | Public | Login and receive JWT |
+| `GET` | `/api/v1/auth/profile` | Bearer Token | Get logged-in user profile |
+
+### Leads
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| `GET` | `/api/v1/leads` | Bearer | admin, sales | List all leads (paginated) |
+| `POST` | `/api/v1/leads` | Bearer | admin, sales | Create a new lead |
+| `GET` | `/api/v1/leads/export` | Bearer | admin, sales | Export leads to CSV |
+| `GET` | `/api/v1/leads/:id` | Bearer | admin, sales | Get a single lead by ID |
+| `PUT` | `/api/v1/leads/:id` | Bearer | admin, sales | Update a lead |
+| `DELETE` | `/api/v1/leads/:id` | Bearer | **admin only** | Delete a lead |
+
+### Health
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/api/v1/health` | Public | Service health check |
+
+### Query Parameters (GET /api/v1/leads)
+| Param | Type | Description |
+|-------|------|-------------|
+| `page` | number | Page number (default: 1) |
+| `limit` | number | Results per page (default: 10) |
+| `status` | string | Filter by: `New`, `Contacted`, `Qualified`, `Lost` |
+| `source` | string | Filter by: `Website`, `Instagram`, `Referral` |
+| `search` | string | Regex search on name and email |
+| `sort` | string | `latest` (default) or `oldest` |
+
+---
+
+## 🔐 Password Requirements
+
+When registering, your password must:
+- Be at least **8 characters** long
+- Contain at least **one uppercase letter**
+- Contain at least **one number**
+
+---
+
+## 🚢 Deployment (Render + Vercel + MongoDB Atlas)
+
+### Backend (Render — Web Service)
+
+**Build Command:** `npm run build`  
+**Start Command:** `yarn start`  
+**Health Check Path:** `/`
+
+**Required Environment Variables:**
 ```
-The client will start dynamically (typically on `http://localhost:5173`).
-
----
-
-## 🐳 Docker Setup (Production Ready)
-
-GigFlow includes a highly-optimized, multi-stage Docker environment mimicking production deployments.
-
-1. Ensure Docker and Docker Compose are installed on your machine.
-2. At the root of the project, run:
-```bash
-docker-compose up --build -d
+NODE_ENV=production
+MONGODB_URI=<your MongoDB Atlas connection string>
+JWT_SECRET=<a strong random secret>
+JWT_EXPIRES_IN=7d
+CORS_ORIGIN=<your Vercel frontend URL>
+LOG_LEVEL=info
 ```
-3. The application is now accessible!
-   - **Frontend UI:** `http://localhost:80`
-   - **Backend API:** internally proxied and natively accessible on port `5000` (or via `/api/v1` on the frontend host).
 
-> **Note:** The frontend utilizes Nginx as a reverse proxy, cleanly handling React Router fallback mapping and secure API proxying to avoid CORS constraints in production.
+### Frontend (Vercel)
 
----
+Deploy the `/client` directory. The `vercel.json` in that folder handles SPA routing.
 
-## 🔗 API Routes
-
-| Method   | Endpoint                  | Access        | Description                               |
-| :------- | :------------------------ | :------------ | :---------------------------------------- |
-| `POST`   | `/api/v1/auth/register`   | Public        | Register a new user                       |
-| `POST`   | `/api/v1/auth/login`      | Public        | Authenticate and receive JWT token        |
-| `GET`    | `/api/v1/auth/me`         | Private       | Fetch current user profile                |
-| `POST`   | `/api/v1/leads`           | Admin/Sales   | Create a new lead                         |
-| `GET`    | `/api/v1/leads`           | Admin/Sales   | Get paginated, filtered leads             |
-| `GET`    | `/api/v1/leads/export`    | Admin/Sales   | Download filtered queries as a CSV file   |
-| `GET`    | `/api/v1/leads/:id`       | Admin/Sales   | Retrieve a single lead by ID              |
-| `PUT`    | `/api/v1/leads/:id`       | Admin/Sales   | Update an existing lead                   |
-| `DELETE` | `/api/v1/leads/:id`       | **Admin Only**| Permanently delete a lead                 |
+**Required Environment Variables:**
+```
+VITE_API_URL=<your Render backend URL>/api/v1
+```
 
 ---
 
-## 📸 Screenshots
+## 📄 License
 
-*(Replace placeholder links with actual hosted image assets)*
-
-| Dashboard Overview | Leads Directory Grid |
-| :---: | :---: |
-| ![Dashboard](./screenshots/dashboard.png) | ![Leads](./screenshots/leads.png) |
-
-| Add Lead Modal | Lead Details |
-| :---: | :---: |
-| ![Modal](./screenshots/modal.png) | ![Lead Details](./screenshots/lead-details.png) |
-
-
-
-## 🔮 Future Improvements
-
-- [ ] **Analytics Engine:** Visual charts detailing lead conversion rates and channel effectiveness over time.
-- [ ] **Email Integration:** Automated welcome and follow-up emails triggered by Lead Status changes.
-- [ ] **WebSocket Notifications:** Real-time push notifications when other team members update prospects.
-- [ ] **Activity Logs:** Auditing trail for lead updates (e.g., tracking who transitioned a lead to "Qualified" and when).
-
----
-
-*Engineered with precision for scale.* 🚀
+This project is for educational and portfolio purposes.
