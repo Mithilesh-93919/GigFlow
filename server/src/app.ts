@@ -24,6 +24,11 @@ app.use(requestLogger);
 // ─── API Routes ─────────────────────────────────────────────────────────────
 app.use('/api/v1', apiRouter);
 
+// Root Health Check for Cloud Providers (Render, etc.)
+app.get('/', (req, res) => {
+  res.status(200).send('GigFlow API is running');
+});
+
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use(notFoundHandler);
 
