@@ -7,7 +7,7 @@ import { logger } from './utils/logger';
 const startServer = async (): Promise<void> => {
   await connectDB();
 
-  const server = app.listen(env.port, () => {
+  const server = app.listen(env.port, '0.0.0.0', () => {
     logger.info(`⚡ GigFlow API running in ${env.nodeEnv} mode on port ${env.port}`);
   });
 
