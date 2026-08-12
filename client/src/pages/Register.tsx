@@ -109,16 +109,19 @@ const Register: React.FC = () => {
                 autoComplete="email"
               />
 
-              <Input
-                {...register('password')}
-                id="password"
-                type="password"
-                label="Password"
-                placeholder="••••••••"
-                error={errors.password}
-                disabled={isRegistering}
-                autoComplete="new-password"
-              />
+              <div>
+                <Input
+                  {...register('password')}
+                  id="password"
+                  type="password"
+                  label="Password"
+                  placeholder="••••••••"
+                  error={errors.password}
+                  disabled={isRegistering}
+                  autoComplete="new-password"
+                />
+                <p className="mt-1.5 text-xs text-slate-400">Must be 8+ characters with at least one uppercase letter and one number.</p>
+              </div>
 
               {/* Role Selection Tabs */}
               <div className="space-y-1.5">

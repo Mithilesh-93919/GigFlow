@@ -30,6 +30,11 @@ export const leadsApi = {
     return response.data.data;
   },
 
+  getLead: async (id: string): Promise<Lead> => {
+    const response = await apiClient.get<{ data: Lead }>(`/leads/${id}`);
+    return response.data.data;
+  },
+
   createLead: async (payload: CreateLeadPayload): Promise<Lead> => {
     const response = await apiClient.post<{ data: Lead }>('/leads', payload);
     return response.data.data;

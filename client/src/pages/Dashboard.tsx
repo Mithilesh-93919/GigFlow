@@ -1,73 +1,64 @@
 import React from 'react';
 import { useAuthStore } from '../store/auth.store';
-import { 
-  TrendingUp, 
-  Users, 
-  UserCheck, 
-  ArrowUpRight, 
+import {
+  TrendingUp,
+  Users,
+  UserCheck,
+  ArrowUpRight,
   Sparkles,
   PhoneCall,
   Mail,
   Share2,
-  Globe
+  Globe,
+  Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { leadsApi } from '../api/leads';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuthStore();
 
-  // Mock data for beautiful overview charts and lists
+  // Fetch real lead data for dashboard stats
+  const { data: allLeads } = useQuery({
+    queryKey: ['leads-dashboard'],
+    queryFn: () => leadsApi.getLeads({ page: 1, limit: 1000 }),
+  });
+
+  const totalLeads = allLeads?.total ?? 0;
+  const qualifiedLeads = allLeads?.data?.filter((l) => l.status === 'Qualified').length ?? 0;
+  const newLeads = allLeads?.data?.filter((l) => l.status === 'New').length ?? 0;
+  const recentLeads = allLeads?.data?.slice(0, 4) ?? [];
+
+  const conversionRate = totalLeads > 0 ? ((qualifiedLeads / totalLeads) * 100).toFixed(1) : '0.0';
+
+  const SOURCE_ICONS: Record<string, React.FC<{ className?: string }>> = {
+    Website: Globe,
+    Instagram: Share2,
+    Referral: PhoneCall,
+  };
+
   const stats = [
     {
-      title: 'Total Prospect Leads',
-      value: '148',
-      change: '+12.5%',
-      trend: 'up',
+      title: 'Total Leads',
+      value: totalLeads.toString(),
+      change: `${newLeads} new`,
       icon: Users,
       color: 'from-blue-500 to-indigo-600',
     },
     {
-      title: 'Qualified Deals',
-      value: '42',
-      change: '+18.2%',
-      trend: 'up',
+      title: 'Qualified Leads',
+      value: qualifiedLeads.toString(),
+      change: `${totalLeads > 0 ? ((qualifiedLeads / totalLeads) * 100).toFixed(0) : 0}% of total`,
       icon: UserCheck,
       color: 'from-emerald-400 to-teal-600',
     },
     {
-      title: 'Monthly Conversion',
-      value: '28.4%',
-      change: '+4.1%',
-      trend: 'up',
+      title: 'Conversion Rate',
+      value: `${conversionRate}%`,
+      change: 'Qualified / Total',
       icon: TrendingUp,
       color: 'from-purple-500 to-pink-600',
-    },
-  ];
-
-  const recentActivities = [
-    {
-      id: 1,
-      leadName: 'Amit Patel',
-      action: 'Qualified as active prospective buyer',
-      time: '15 mins ago',
-      source: 'Social Media',
-      sourceIcon: Share2,
-    },
-    {
-      id: 2,
-      leadName: 'Sneha Rao',
-      action: 'Inbound inquiry submitted via form',
-      time: '1 hour ago',
-      source: 'Website',
-      sourceIcon: Globe,
-    },
-    {
-      id: 3,
-      leadName: 'Vikram Singh',
-      action: 'Initial discovery call logged by team',
-      time: '3 hours ago',
-      source: 'Referral',
-      sourceIcon: PhoneCall,
     },
   ];
 
@@ -86,7 +77,7 @@ const Dashboard: React.FC = () => {
               <span>Workspace Active</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-              Welcome to your Workspace, {user?.name}!
+              Welcome, {user?.name}!
             </h1>
             <p className="text-sm sm:text-base text-slate-300 font-light max-w-xl">
               Monitor prospect channels, coordinate marketing campaigns, and drive sales opportunities using your GigFlow CRM panels.
@@ -104,20 +95,22 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* ─── DYNAMIC STATISTICS CARDS ─── */}
+      {/* ─── LIVE STATISTICS CARDS ─── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div 
+            <div
               key={index}
               className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between group"
             >
               <div className="space-y-3">
                 <span className="text-sm font-semibold text-slate-400 block">{stat.title}</span>
                 <div className="flex items-baseline space-x-2">
-                  <span className="text-3xl font-extrabold text-slate-800 tracking-tight">{stat.value}</span>
-                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <span className="text-3xl font-extrabold text-slate-800 tracking-tight">
+                    {allLeads === undefined ? <Loader2 className="w-6 h-6 animate-spin text-slate-400 inline" /> : stat.value}
+                  </span>
+                  <span className="text-xs font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-full">
                     {stat.change}
                   </span>
                 </div>
@@ -132,35 +125,51 @@ const Dashboard: React.FC = () => {
 
       {/* ─── DOUBLE SECTION CONTENT ─── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Activity List */}
+        {/* Recent Leads List */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm lg:col-span-2 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <h3 className="text-lg font-bold text-slate-800">Recent Prospect Activity</h3>
+              <h3 className="text-lg font-bold text-slate-800">Recent Leads</h3>
               <Link to="/leads" className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">
                 View all leads
               </Link>
             </div>
 
-            <div className="space-y-4">
-              {recentActivities.map((act) => {
-                const SourceIcon = act.sourceIcon;
-                return (
-                  <div key={act.id} className="flex items-start space-x-4 p-3 rounded-xl hover:bg-slate-50 transition-colors duration-150">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                      <SourceIcon className="w-4 h-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-slate-800 truncate">{act.leadName}</p>
-                      <p className="text-xs text-slate-500 mt-0.5 truncate">{act.action}</p>
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium whitespace-nowrap pl-2">
-                      {act.time}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+            {recentLeads.length === 0 ? (
+              <div className="text-center py-8 text-slate-400">
+                <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <p className="text-sm font-medium">No leads yet. Add your first lead!</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {recentLeads.map((lead) => {
+                  const SIcon = SOURCE_ICONS[lead.source] ?? Globe;
+                  return (
+                    <Link
+                      key={lead._id}
+                      to={`/leads/${lead._id}`}
+                      className="flex items-start space-x-4 p-3 rounded-xl hover:bg-slate-50 transition-colors duration-150 group"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                        <SIcon className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-800 truncate group-hover:text-blue-600 transition-colors">{lead.name}</p>
+                        <p className="text-xs text-slate-500 mt-0.5 truncate">{lead.email}</p>
+                      </div>
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${
+                        lead.status === 'Qualified' ? 'bg-green-100 text-green-700' :
+                        lead.status === 'New' ? 'bg-blue-100 text-blue-700' :
+                        lead.status === 'Contacted' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {lead.status}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
@@ -168,22 +177,22 @@ const Dashboard: React.FC = () => {
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-2xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
           {/* Accent Shapes */}
           <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl" />
-          
+
           <div className="space-y-4 relative z-10">
-            <h4 className="text-lg font-bold">Quick Sales Assist</h4>
+            <h4 className="text-lg font-bold">Quick Sales Guide</h4>
             <p className="text-sm text-blue-100 font-light leading-relaxed">
-              Ensure you record status shifts (e.g. converting a lead to "Qualified") immediately. Doing so triggers active marketing emails on the server!
+              Record status shifts immediately (e.g., converting a lead to "Qualified"). This keeps your pipeline accurate and triggers the right follow-up actions.
             </p>
           </div>
 
           <div className="pt-6 relative z-10 space-y-3">
             <div className="flex items-center space-x-3 text-sm text-blue-50 font-medium">
               <Mail className="w-4 h-4 text-blue-200" />
-              <span>automated-outreach@gigflow.com</span>
+              <span>support@gigflow.com</span>
             </div>
             <div className="flex items-center space-x-3 text-sm text-blue-50 font-medium">
               <Users className="w-4 h-4 text-blue-200" />
-              <span>Role Level: <span className="capitalize">{user?.role}</span></span>
+              <span>Role: <span className="capitalize font-bold">{user?.role}</span></span>
             </div>
           </div>
         </div>
